@@ -10,10 +10,7 @@
 
     <title>Página principal</title>
     <style>
-      #corpo-pagina{
-        width: 60%;
-        padding-right: 15px;
-        padding-left: 15px;
+      .container{
         margin: 5% auto 5% auto;
       }
       .grid-container {
@@ -102,9 +99,9 @@
     </style>
   </head>
   <body>
-    <div id="corpo-pagina">
+    <div class="container">
         <div id="banner">
-           <img class="w-100" src="../resources/imagens/logoSistema.png" alt="" >
+           <img class="w-100" src="../../resources/imagens/logoSistema.png" alt="" >
         </div>    
         <div class="grid-container">
             <div class="grid-item1">
@@ -134,22 +131,27 @@
 
                 <div>
 
-                  <h5>Consulta</h5>
+                  <h5>Insere Hora</h5>
 
                   <form id="form1" method="POST" >
 
                   <div>
-                    <label for="">Data Entrada:</label>
-                    <input type="text" placeholder="DD/MM/AAAA">
+                    <label for=""><span class="text-danger">*</span>Data</label>
+                    <input required type="text" placeholder="DD/MM/AAAA">
                   </div>
-                  <div>
-                    <label for="">Data Saída:</label>
-                    <input type="text" placeholder="DD/MM/AAAA">
+                  <div class="horaInput">
+                    <label for=""><span class="text-danger">*</span>Hora Entrada:</label>
+                    <input required type="text" placeholder="##:##">
+                  </div>
+                  <div class="horaInput">
+                    <label for=""><span class="text-danger">*</span>Hora Saída:</label>
+                    <input required type="text" placeholder="##:##">
                   </div>
 
                   <div class="justificativa">
-                    <label for="">Justificativa:</label>
-                    <select name="justificativa" id="">
+                    <label for=""><span class="text-danger">*</span>Justificativa:</label>
+                    <select required name="justificativa" id="">
+                      <option value="">Selecione</option>
                       <option value="volvo">Prod. Conteúdo</option>
                       <option value="saab">Versionamento</option>
                       <option value="mercedes">Capacitação</option>
@@ -157,7 +159,7 @@
                     </select>
 
                     <div class="d-flex justify-content-center">
-                       <input class="submitInput" type="submit" value="Consultar">
+                       <input class="submitInput" type="submit" value="Insere Hora">
                     </div>
                   
                   </div>
@@ -193,8 +195,8 @@
                       </select>
                     </td>
                     <td>
-                    <span><img src="../resources/imagens/iconeEditar.png"></span>
-                    <span><img src="../resources/imagens/iconeExcluir.png"></span>
+                    <span><img src="../../resources/imagens/iconeEditar.png"></span>
+                    <span><img src="../../resources/imagens/iconeExcluir.png"></span>
                     </td>
                   </tr>
                   <tr>
@@ -204,8 +206,8 @@
                     <td>4</td>
                     <td>Produção</td>
                     <td>
-                    <span><img src="../resources/imagens/iconeEditar.png"></span>
-                    <span><img src="../resources/imagens/iconeExcluir.png"></span>
+                    <span><img src="../../resources/imagens/iconeEditar.png"></span>
+                    <span><img src="../../resources/imagens/iconeExcluir.png"></span>
                     </td>
                   </tr>
                   <tr>
@@ -215,8 +217,8 @@
                     <td>2</td>
                     <td>Capacitação</td>
                     <td>
-                    <span><img src="../resources/imagens/iconeEditar.png"></span>
-                    <span><img src="../resources/imagens/iconeExcluir.png"></span>
+                    <span><img src="../../resources/imagens/iconeEditar.png"></span>
+                    <span><img src="../../resources/imagens/iconeExcluir.png"></span>
                     </td>
                   </tr>
                   <tr>
@@ -229,15 +231,15 @@
                   </tr>
                 </table>
                 </div>
-                <div class="w-25 mt-3 ml-4" >
+                <div class="mt-4 ml-4 w-25">
                     <h5>Legenda:</h5>
-                    <div style="display: flex; justify-content: space-between;">
+                    <div class="d-flex justify-content-between">
                       <p>
-                      <span><img src="../resources/imagens/iconeEditar.png"></span>
+                      <span><img src="../../resources/imagens/iconeEditar.png"></span>
                       Editar
                       </p>
                       <p>
-                      <span><img src="../resources/imagens/iconeExcluir.png"></span>
+                      <span><img src="../../resources/imagens/iconeExcluir.png"></span>
                       Excluir
                       </p>
                     </div>
