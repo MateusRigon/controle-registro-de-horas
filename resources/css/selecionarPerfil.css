@@ -1,0 +1,33 @@
+.container{
+    margin: 5% auto 5% auto;
+  }
+  .grid-container {
+    padding: 20px;
+  }
+  .userDiv{
+    background-color: rgba(0, 153, 255, 1);
+    color: white;
+    padding: 10px 25px 5px 25px;
+    border-radius: 20px;
+  }
+
+  .tableFuncoes{
+    background-color:rgba(242, 242, 242, 1);
+    padding: 90px;
+    border-radius: 20px;
+    margin-top: 13px;
+  }
+  label {
+    display:block;
+  }
+  input{
+    text-align: center;
+    color: white;
+    background-color: rgba(0, 153, 255, 1);
+    border-radius: 10px;
+    outline: none;
+    border:none;
+    cursor:pointer;
+    width:50%;
+    height: 35px;
+  }
