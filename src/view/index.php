@@ -1,3 +1,6 @@
+<?php 
+  session_start();
+?>
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -13,6 +16,9 @@
 
   </head>
   <body>
+
+    <?php if( isset( $_SESSION['usuarioLogado'] ) ) { ?>
+
     <div class="container">
         <div id="banner">
            <img class="w-100" src="../../resources/imagens/logoSistema.png" alt="" >
@@ -37,8 +43,8 @@
             <div class="grid-item2" >
 
               <div class="userDiv d-flex justify-content-between"> 
-                 <h5>Usuário: Fulano de tal</h5>
-                 <h5>Perfil: Trabalhador</h5>
+                 <h5>Usuário: <?=$_SESSION['usuarioLogado']?></h5>
+                 <h5>Perfil: <?=$_SESSION['perfil']?></h5>
               </div>
 
               <div class="tableFuncoes">
@@ -173,7 +179,7 @@
             </div>
         </div>
     </div>
-
+    <?php } ?>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

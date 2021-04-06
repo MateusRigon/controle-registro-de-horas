@@ -1,3 +1,13 @@
+<?php
+  require '../controller/usuarioController.php';
+
+  if(isset($_POST['entrar'])) { 
+      $controller = new UsuarioController();
+      $controller->logarUsuario($_POST['email'], $_POST['senha']);
+  }
+  
+?>
+
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -44,7 +54,7 @@
                   <input required type="email" name="email">
                 </div>
                 <div style="margin-top: 10px;">
-                  <label for="senha">Senha</label>
+                  <label for="senha">Senha <span class="text-danger"> <?= $msgErro; ?> </span> </label>
                   <input required type="password" name="senha">
                 </div>
 
