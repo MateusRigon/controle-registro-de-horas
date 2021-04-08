@@ -43,7 +43,18 @@ class UsuarioService{
     public function perfilSelecionado($perfil){
         session_start();
         $_SESSION['perfil'] = ucfirst($perfil);
+        $_SESSION['verificarUsuarioLogado'] = "usuarioLogadoRetornaIndex";
         return header("location: index.php");
+    }
+
+    public function deslogarUsuario($session){
+        unset($session);
+        session_destroy();
+
+        echo"<script language='javascript' type='text/javascript'>
+			        alert('Deslogado com sucesso!');window.location.
+	     		        href='loginUsuarios.php'</script>";
+
     }
 }
 

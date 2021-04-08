@@ -1,3 +1,18 @@
+<?php 
+  require '../controller/usuarioController.php';
+
+  session_start();
+
+  if(isset($_GET['sair'])){
+    $controllerUsuario = new UsuarioController();
+    $controllerUsuario->deslogarUsuario($_SESSION['usuarioLogado']);
+  }
+
+  if( ! isset( $_SESSION['usuarioLogado'] ) ) {
+      header("location: loginUsuarios.php");
+  }
+?>
+
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -21,16 +36,20 @@
             <div class="grid-item1">
             <table class="w-100">
                 <tr>
-                  <td><a href="index.html">Inserir</a></td>
+                  <td><a href="index.php">Inserir</a></td>
                 </tr>
                 <tr>
-                  <td><a href="editarHoras.html">Editar</a></td>
+                  <td><a href="editarHoras.php">Editar</a></td>
                 </tr>
                 <tr>
-                  <td><a href="visualizarHoras.html">Visualizar</a></td>
+                  <td><a href="visualizarHoras.php">Visualizar</a></td>
                 </tr>
                 <tr>
-                    <td><a href="loginUsuarios.html">Sair</a></td>
+                    <td>
+                      <form method="GET">
+                        <input name="sair" class="sairLink h-25" type="submit" value="Sair">
+                      </form>
+                    </td>
                 </tr>
             </table>
             </div>

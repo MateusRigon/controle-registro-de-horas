@@ -1,6 +1,24 @@
 <?php 
+  require '../controller/usuarioController.php';
+  require '../controller/horasController.php';
+
   session_start();
+  $controllerUsuario = new UsuarioController();
+  $controllerHoras = new HorasController();
+
+  if(isset($_GET['sair'])){
+    $controllerUsuario->deslogarUsuario($_SESSION['usuarioLogado']);
+  }
+
+  if( ! isset( $_SESSION['usuarioLogado'] ) ) {
+    header("location: loginUsuarios.php");
+  }
+
+  if(isset($_POST['insereHora'])){
+    $controllerHoras->insereHora();
+  }
 ?>
+
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -17,8 +35,6 @@
   </head>
   <body>
 
-    <?php if( isset( $_SESSION['usuarioLogado'] ) ) { ?>
-
     <div class="container">
         <div id="banner">
            <img class="w-100" src="../../resources/imagens/logoSistema.png" alt="" >
@@ -27,16 +43,20 @@
             <div class="grid-item1">
             <table class="w-100">
                 <tr>
-                  <td><a href="index.html">Inserir</a></td>
+                  <td><a href="index.php">Inserir</a></td>
                 </tr>
                 <tr>
-                  <td><a href="editarHoras.html">Editar</a></td>
+                  <td><a href="editarHoras.php">Editar</a></td>
                 </tr>
                 <tr>
-                  <td><a href="visualizarHoras.html">Visualizar</a></td>
+                  <td><a href="visualizarHoras.php">Visualizar</a></td>
                 </tr>
                 <tr>
-                    <td><a href="loginUsuarios.html">Sair</a></td>
+                    <td>
+                        <form method="GET">
+                          <input name="sair" class="sairLink h-25" type="submit" value="Sair">
+                        </form>
+                    </td>
                 </tr>
             </table>
             </div>
@@ -79,7 +99,7 @@
                     </select>
 
                     <div class="d-flex justify-content-center">
-                       <input class="submitInput" type="submit" value="Insere Hora">
+                       <input name="insereHora" class="submitInput" type="submit" value="Insere Hora">
                     </div>
                   
                   </div>
@@ -179,7 +199,7 @@
             </div>
         </div>
     </div>
-    <?php } ?>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

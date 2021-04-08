@@ -4,10 +4,17 @@
   session_start();
 
   if(isset($_POST['entrar'])) { 
-      $controller = new UsuarioController();
-      $controller->perfilSelecionado($_POST['perfil']);
+      $controllerUsuario = new UsuarioController();
+      $controllerUsuario->perfilSelecionado($_POST['perfil']);
+  }
+  
+  if( ! isset( $_SESSION['usuarioLogado'] ) ) {
+    header("location: loginUsuarios.php");
   }
 
+  if( isset( $_SESSION['verificarUsuarioLogado'] ) ) {
+    header("location: index.php");
+  }
 ?>
 
 <!doctype html>
@@ -25,8 +32,6 @@
   
   </head>
   <body>
-
-    <?php if( isset( $_SESSION['usuarioLogado'] ) ) { ?>
 
       <div class="container">
       <div id="banner">
@@ -63,8 +68,6 @@
         </div>
     </div>
     
-  <?php } ?>
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

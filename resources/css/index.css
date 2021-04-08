@@ -84,3 +84,16 @@
     padding: 20px;
     border-radius: 20px;
   }
+
+  .sairLink {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+  }
+  .sairLink:hover{
+    text-decoration: underline;
+  }
+  .sairLink:focus {
+    outline: none;
+  }

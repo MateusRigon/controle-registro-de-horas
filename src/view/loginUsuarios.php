@@ -2,10 +2,15 @@
   require '../controller/usuarioController.php';
 
   if(isset($_POST['entrar'])) { 
-      $controller = new UsuarioController();
-      $controller->logarUsuario($_POST['email'], $_POST['senha']);
+      $controllerUsuario = new UsuarioController();
+      $controllerUsuario->logarUsuario($_POST['email'], $_POST['senha']);
   }
   
+  session_start();
+
+  if( isset( $_SESSION['verificarUsuarioLogado'] ) ) {
+      header("location: index.php");
+  }
 ?>
 
 <!doctype html>
@@ -23,6 +28,7 @@
 
   </head>
   <body>
+
     <div class="container">
         <div id="banner">
            <img class="w-100" src="../../resources/imagens/capaSistema.png" alt="" >

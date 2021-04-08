@@ -13,5 +13,10 @@ class UsuarioController{
         $service = new UsuarioService;
         return $service->perfilSelecionado($perfil);
     }
+
+    public function deslogarUsuario($session){
+        $service = new UsuarioService;
+        return $service->deslogarUsuario($session);
+    }
 }
 ?>
