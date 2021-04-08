@@ -10,8 +10,11 @@
     $controllerUsuario->deslogarUsuario($_SESSION['usuarioLogado']);
   }
 
-  if( ! isset( $_SESSION['usuarioLogado'] ) ) {
+  if( ! isset( $_SESSION['usuarioLogado']  ) ) {
     header("location: loginUsuarios.php");
+  }
+  if( ! isset( $_SESSION['verificarUsuarioLogado']  ) ) {
+    header("location: selecionarPerfil.php");
   }
 
   if(isset($_POST['insereHora'])){

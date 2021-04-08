@@ -1,16 +1,13 @@
 <?php
   require '../controller/usuarioController.php';
 
+  session_start();
+
   if(isset($_POST['entrar'])) { 
       $controllerUsuario = new UsuarioController();
       $controllerUsuario->logarUsuario($_POST['email'], $_POST['senha']);
   }
-  
-  session_start();
 
-  if( isset( $_SESSION['verificarUsuarioLogado'] ) ) {
-      header("location: index.php");
-  }
 ?>
 
 <!doctype html>

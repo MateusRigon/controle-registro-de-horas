@@ -11,7 +11,7 @@
   if( ! isset( $_SESSION['usuarioLogado'] ) ) {
     header("location: loginUsuarios.php");
   }
-
+  
   if( isset( $_SESSION['verificarUsuarioLogado'] ) ) {
     header("location: index.php");
   }
