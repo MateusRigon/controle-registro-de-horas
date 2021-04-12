@@ -1,10 +1,10 @@
 <?php 
   require '../controller/usuarioController.php';
-  require '../controller/horasController.php';
+  require '../controller/horariosController.php';
 
   session_start();
   $controllerUsuario = new UsuarioController();
-  $controllerHoras = new HorasController();
+  $controllerHoras = new HorariosController();
 
   if(isset($_GET['sair'])){
     $controllerUsuario->deslogarUsuario($_SESSION['usuarioLogado']);
@@ -18,7 +18,8 @@
   }
 
   if(isset($_POST['insereHora'])){
-    $controllerHoras->insereHora();
+    $controllerHoras->insereHora($_POST['data'], $_POST['horaEntrada'],
+         $_POST['horaSaida'], $_POST['justificativa']);
   }
 ?>
 
@@ -77,28 +78,41 @@
                   <h5>Insere Hora</h5>
 
                   <form id="form1" method="POST" >
-
+                  
                   <div>
-                    <label for=""><span class="text-danger">*</span>Data</label>
-                    <input required type="text" placeholder="DD/MM/AAAA">
+                  <div class="d-flex">
+                  <div>
+                    <label for="data"><span class="text-danger">*</span>Data</label>
+                    <input name="data" required type="text" placeholder="DD/MM/AAAA">
                   </div>
                   <div class="horaInput">
-                    <label for=""><span class="text-danger">*</span>Hora Entrada:</label>
-                    <input required type="text" placeholder="##:##">
+                    <label for="horaEntrada"><span class="text-danger">*</span>Hora Entrada:</label>
+                    <input name="horaEntrada" required type="text" placeholder="##:##">
                   </div>
+                  </div>
+
+                 
+                 <div class="d-flex justify-content-center">
+                    <p class="mt-3 mb-0 text-success"><?= $mensagemSucesso ?></p>
+                    <p class="mt-3 mb-0 text-danger"><?= $mensagemErro ?></p>
+                 </div>
+                
+                  
+                  </div>
+
                   <div class="horaInput">
-                    <label for=""><span class="text-danger">*</span>Hora Saída:</label>
-                    <input required type="text" placeholder="##:##">
+                    <label for="horaSaida"><span class="text-danger">*</span>Hora Saída:</label>
+                    <input name="horaSaida" required type="text" placeholder="##:##">
                   </div>
 
                   <div class="justificativa">
-                    <label for=""><span class="text-danger">*</span>Justificativa:</label>
+                    <label for="justificativa"><span class="text-danger">*</span>Justificativa:</label>
                     <select required name="justificativa" id="">
                       <option value="">Selecione</option>
-                      <option value="volvo">Prod. Conteúdo</option>
-                      <option value="saab">Versionamento</option>
-                      <option value="mercedes">Capacitação</option>
-                      <option value="audi">Empréstimo</option>
+                      <option value="Prod. Conteúdo">Prod. Conteúdo</option>
+                      <option value="Versionamento">Versionamento</option>
+                      <option value="Capacitação">Capacitação</option>
+                      <option value="Empréstimo">Empréstimo</option>
                     </select>
 
                     <div class="d-flex justify-content-center">

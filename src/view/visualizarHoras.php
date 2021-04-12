@@ -56,8 +56,8 @@
             <div class="grid-item2" >
 
               <div class="userDiv d-flex justify-content-between"> 
-                 <h5>Usuário: Fulano de tal</h5>
-                 <h5>Perfil: Trabalhador</h5>
+                 <h5>Usuário: <?=$_SESSION['usuarioLogado']?></h5>
+                 <h5>Perfil: <?=$_SESSION['perfil']?></h5>
               </div>
 
               <div class="tableFuncoes">
