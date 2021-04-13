@@ -10,6 +10,10 @@
     $controllerUsuario->deslogarUsuario($_SESSION['usuarioLogado']);
   }
 
+  if(isset($_POST['excluir'])){
+    $controllerHoras->excluirHorario($_POST['id']);
+  }
+
   if( ! isset( $_SESSION['usuarioLogado']  ) ) {
     header("location: loginUsuarios.php");
   }
@@ -21,6 +25,9 @@
     $controllerHoras->insereHora($_POST['data'], $_POST['horaEntrada'],
          $_POST['horaSaida'], $_POST['justificativa']);
   }
+
+  $retorno = $controllerHoras->retornaHorariosInseridos();
+
 ?>
 
 <!doctype html>
@@ -138,51 +145,37 @@
                     <th>Justificativa</th> 
                     <th>Opções</th>
                   </tr>
-                  <tr>
-                    <td><input type="text" value="10/10/2016"></td>
-                    <td><input type="text" value="08:00"></td>
-                    <td><input type="text" value="12:00"></td>
-                    <td>4</td>
-                    <td>
-                      <select style="padding: 6px;" name="justificativa" id="">
-                        <option value="volvo">Prod. Conteúdo</option>
-                        <option value="saab">Versionamento</option>
-                        <option value="mercedes">Capacitação</option>
-                        <option value="audi">Empréstimo</option>
-                      </select>
-                    </td>
-                    <td>
-                    <span><img src="../../resources/imagens/iconeEditar.png"></span>
-                    <span><img src="../../resources/imagens/iconeExcluir.png"></span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>10/10/2016</td>
-                    <td>13:00</td>
-                    <td>17:00</td>
-                    <td>4</td>
-                    <td>Produção</td>
-                    <td>
-                    <span><img src="../../resources/imagens/iconeEditar.png"></span>
-                    <span><img src="../../resources/imagens/iconeExcluir.png"></span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>11/10/2016</td>
-                    <td>10:00</td>
-                    <td>12:00</td>
-                    <td>2</td>
-                    <td>Capacitação</td>
-                    <td>
-                    <span><img src="../../resources/imagens/iconeEditar.png"></span>
-                    <span><img src="../../resources/imagens/iconeExcluir.png"></span>
-                    </td>
-                  </tr>
+                  <?php
+                  $listaId = array();
+                    foreach($retorno as $horario) { 
+                      
+
+                      array_push($listaId, $horario['id']);
+                      ?>
+                      <tr>
+                        <input name="id<?= $horario['id']; ?>" type="hidden" value="<?= $horario['id']; ?>">
+                        <td><?= $horario['data']; ?></td>
+                        <td><?= $horario['hora_entrada']; ?></td>
+                        <td><?= $horario['hora_saida']; ?></td>
+                        <td><?= $horario['total_horas']; ?></td>
+                        <td><?= $horario['justificativa']; ?></td>
+                        
+                        <form method="POST" >
+                        <td class="d-flex justify-content-center">
+                        <a href="editarHoras.php"> <span><img src="../../resources/imagens/iconeEditar.png"></span></a>
+                        <input name="id" type="hidden" value="<?= $horario['id']; ?>">
+                        <button style="border: 0; cursor: pointer;" type="submit" name="excluir"><img src="../../resources/imagens/iconeExcluir.png"></button>
+                        </td>
+                    
+                        </form>
+                      </tr>
+                  <?php }?>
+    
                   <tr>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td><?= $somaHoras;?></td>
                     <td></td>
                     <td></td>
                   </tr>
@@ -208,7 +201,13 @@
                     <input class="submitInput" type="button" value="Voltar">
                     </div>
                     <div>
-                    <input class="submitInput" type="submit" value="Enviar para Análise">
+                    <input name="enviarAnalise" class="submitInput" type="submit" value="Enviar para Análise">
+
+                    <?php
+                      if(isset( $_POST['enviarAnalise'])){
+                        $controllerHoras->enviarParaAnalise($listaId);
+                      }
+                    ?>
                     </div>
                 </div>
               </form>   
