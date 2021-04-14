@@ -4,7 +4,7 @@ include_once '../repository/dataBase.php';
 
 class HorariosService{
 
-    public function insereHorario($data, $horaEntrada, $horaSaida, $justificativa){
+    public function insereHorario($idUsuario, $data, $horaEntrada, $horaSaida, $justificativa){
         $classConexao = new ConexaoDataBase();
         $conexao = $classConexao->conectar();
         global $mensagemErro;
@@ -17,9 +17,9 @@ class HorariosService{
                 $mensagemErro = "Horário já inserido!";
             }else{
                 $query = "INSERT INTO horarios (data, hora_entrada, 
-                            hora_saida, total_horas, justificativa, status) 
+                            hora_saida, total_horas, justificativa, status, id_usuario) 
                             VALUES('$data', '$horaEntrada', 
-                            '$horaSaida', '$totalHoras', '$justificativa', '$status') ";
+                            '$horaSaida', '$totalHoras', '$justificativa', '$status', '$idUsuario') ";
                 $retorno = mysqli_query($conexao, $query);    
                 
                 if($retorno){
@@ -48,11 +48,11 @@ class HorariosService{
         }
     }
 
-    public function retornaHorariosInseridos(){
+    public function retornaHorariosInseridos($idUsuario){
         $classConexao = new ConexaoDataBase();
         $conexao = $classConexao->conectar();
         
-        $query = "SELECT * FROM horarios";
+        $query = "SELECT * FROM horarios WHERE status = 0 AND id_usuario = '$idUsuario' ";
         $retorno = mysqli_query($conexao, $query);
         $array = mysqli_fetch_assoc($retorno);
 
@@ -87,14 +87,46 @@ class HorariosService{
 
     public function enviarParaAnalise($listaId){
         if( ! empty($listaId)){
-            foreach($listaId as $teste){
+            foreach($listaId as $id){
                 //update horarios set status = 1 where id = $teste 
+                $classConexao = new ConexaoDataBase();
+                $conexao = $classConexao->conectar();
+
+                $query = "UPDATE horarios SET status = 1 WHERE id = '$id'";
+                $retorno = mysqli_query($conexao, $query);
             }
             echo"<script language='javascript' type='text/javascript'>
                 alert('Horários enviados para análise!');window.location.
                     href='index.php'</script>";
         }
     }
+
+    public function retornaHorariosPorHoraOuJustificativa($idUsuario, $dataInicial, $dataFinal, $justificativa){
+
+        if( ! empty($justificativa)){
+            $queryJustificativa = "AND justificativa = '$justificativa'";
+        }
+        $classConexao = new ConexaoDataBase();
+        $conexao = $classConexao->conectar();
+        
+        $query = "SELECT * FROM horarios WHERE 
+        (data BETWEEN '$dataInicial' AND '$dataFinal') $queryJustificativa ";
+        $retorno = mysqli_query($conexao, $query);
+        $array = mysqli_fetch_assoc($retorno);
+
+        if( ! empty($array)){
+            global $arrayRetorno;
+            global $somaHoras;
+            $arrayRetorno = array();
+
+            do{
+                array_push($arrayRetorno, $array);
+                $somaHoras += $array['total_horas'];
+            }while($array = mysqli_fetch_assoc($retorno));
+
+            return $arrayRetorno;
+        }
+    } 
 }
 
 ?>

@@ -22,11 +22,11 @@
   }
 
   if(isset($_POST['insereHora'])){
-    $controllerHoras->insereHora($_POST['data'], $_POST['horaEntrada'],
+    $controllerHoras->insereHora($_SESSION['idUsuario'],$_POST['data'], $_POST['horaEntrada'],
          $_POST['horaSaida'], $_POST['justificativa']);
   }
-
-  $retorno = $controllerHoras->retornaHorariosInseridos();
+  
+  $retorno = $controllerHoras->retornaHorariosInseridos($_SESSION['idUsuario']);
 
 ?>
 
@@ -153,7 +153,6 @@
                       array_push($listaId, $horario['id']);
                       ?>
                       <tr>
-                        <input name="id<?= $horario['id']; ?>" type="hidden" value="<?= $horario['id']; ?>">
                         <td><?= $horario['data']; ?></td>
                         <td><?= $horario['hora_entrada']; ?></td>
                         <td><?= $horario['hora_saida']; ?></td>

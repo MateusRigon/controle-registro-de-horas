@@ -1,7 +1,10 @@
 <?php 
   require '../controller/usuarioController.php';
+  require '../controller/horariosController.php';
 
   session_start();
+
+  $controllerHoras = new HorariosController();
 
   if(isset($_GET['sair'])){
     $controllerUsuario = new UsuarioController();
@@ -11,6 +14,12 @@
   if( ! isset( $_SESSION['usuarioLogado'] ) ) {
       header("location: loginUsuarios.php");
   }
+
+  if(isset($_POST['consultar'])){
+    $retorno = $controllerHoras->retornaHorariosPorHoraOuJustificativa($_SESSION['idUsuario'], 
+                 $_POST['dataInicial'], $_POST['dataFinal'], $_POST['justificativa']);
+  }
+
 ?>
 <!doctype html>
 <html lang="pt-br">
@@ -69,26 +78,26 @@
                   <form id="form1" method="POST" >
 
                   <div>
-                    <label for="">Data Início:</label>
-                    <input type="text" placeholder="DD/MM/AAAA">
+                    <label for="dataInicial"><span class="text-danger">*</span>Data Início:</label>
+                    <input name="dataInicial" required type="text" placeholder="DD/MM/AAAA">
                   </div>
                   <div>
-                    <label for="">Data Final:</label>
-                    <input type="text" placeholder="DD/MM/AAAA">
+                    <label for="dataFinal"><span class="text-danger">*</span>Data Final:</label>
+                    <input name="dataFinal" required type="text" placeholder="DD/MM/AAAA">
                   </div>
 
                   <div class="justificativa w-50">
                     <label for="">Justificativa:</label>
                     <select name="justificativa" id="">
                       <option value="">Selecione</option>
-                      <option value="volvo">Prod. Conteúdo</option>
-                      <option value="saab">Versionamento</option>
-                      <option value="mercedes">Capacitação</option>
-                      <option value="audi">Empréstimo</option>
+                      <option value="Prod. Conteúdo">Prod. Conteúdo</option>
+                      <option value="Versionamento">Versionamento</option>
+                      <option value="Capacitação">Capacitação</option>
+                      <option value="Empréstimo">Empréstimo</option>
                     </select>
 
                     <div class="d-flex justify-content-center">
-                       <input class="submitInput" type="submit" value="Consultar">
+                       <input name="consultar" class="submitInput" type="submit" value="Consultar">
                     </div>
                   
                   </div>
@@ -110,32 +119,22 @@
                     <th>Total Horas</th>
                     <th>Justificativa</th> 
                   </tr>
-                  <tr>
-                    <td>10/10/2016</td>
-                    <td>08:00</td>
-                    <td>12:00</td>
-                    <td>4</td>
-                    <td>Versionamento</td>
-                  </tr>
-                  <tr>
-                    <td>10/10/2016</td>
-                    <td>13:00</td>
-                    <td>17:00</td>
-                    <td>4</td>
-                    <td>Produção</td>
-                  </tr>
-                  <tr>
-                    <td>11/10/2016</td>
-                    <td>10:00</td>
-                    <td>12:00</td>
-                    <td>2</td>
-                    <td>Capacitação</td>
-                  </tr>
+                  
+                  <?php
+                      foreach($retorno as $horario){ ?>
+                      <tr>
+                        <td><?= $horario['data']; ?></td>
+                        <td><?= $horario['hora_entrada']; ?></td>
+                        <td><?= $horario['hora_saida']; ?></td>
+                        <td><?= $horario['total_horas']; ?></td>
+                        <td><?= $horario['justificativa']; ?></td>
+                      </tr>
+                  <?php } ?>
                   <tr>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td><?= $somaHoras;?></td>
                     <td></td>
                   </tr>
                 </table>

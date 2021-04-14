@@ -34,6 +34,7 @@ class UsuarioService{
                 session_start();
                 $_SESSION['usuarioLogado'] = ucfirst($usuario['login']);
                 $_SESSION['perfil'] = $perfil;
+                $_SESSION['idUsuario'] = $usuario['id'];
 
                 echo"<script language='javascript' type='text/javascript'>
                         alert('Logado com sucesso!');window.location.
