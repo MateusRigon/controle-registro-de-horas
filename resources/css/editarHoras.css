@@ -58,6 +58,10 @@
       padding: 6px;
       width: 100%;
   }
+  .justificativa2 select{
+    padding: 6px;
+    width: 100%;
+  }
   .submitInput{
     color: white;
     background-color: rgba(0, 153, 255, 1);
@@ -96,4 +100,18 @@
   }
   .sairLink:focus {
     outline: none;
+  }
+
+  .botoesSalvarExcluir button{
+    border: 0; 
+    cursor: pointer; 
+    margin-top: 2px;
+  }
+
+  .botoesSalvarExcluir button:hover{
+    border: 1px solid black; 
+  }
+
+  .formEditar input{
+    text-align: center;
   }

@@ -52,7 +52,8 @@ class HorariosService{
         $classConexao = new ConexaoDataBase();
         $conexao = $classConexao->conectar();
         
-        $query = "SELECT * FROM horarios WHERE status = 0 AND id_usuario = '$idUsuario' ";
+        $query = "SELECT * FROM horarios WHERE status = 0 AND id_usuario = '$idUsuario' 
+        ORDER BY data DESC";
         $retorno = mysqli_query($conexao, $query);
         $array = mysqli_fetch_assoc($retorno);
 
@@ -88,7 +89,6 @@ class HorariosService{
     public function enviarParaAnalise($listaId){
         if( ! empty($listaId)){
             foreach($listaId as $id){
-                //update horarios set status = 1 where id = $teste 
                 $classConexao = new ConexaoDataBase();
                 $conexao = $classConexao->conectar();
 
@@ -101,16 +101,26 @@ class HorariosService{
         }
     }
 
-    public function retornaHorariosPorHoraOuJustificativa($idUsuario, $dataInicial, $dataFinal, $justificativa){
+    public function retornaHorariosPorHoraOuJustificativa($idUsuario, $dataInicial, $dataFinal, $justificativa, $pagina){
+
+        $status = 0; // 0 e 1 - para 0 não enviado e 1 enviado
+        global $mensagemErro;
+        global $mensagemSucesso;
 
         if( ! empty($justificativa)){
             $queryJustificativa = "AND justificativa = '$justificativa'";
         }
+
+        if($pagina == "visualizarHoras"){
+            $status = 1;
+        }
+        
         $classConexao = new ConexaoDataBase();
         $conexao = $classConexao->conectar();
         
         $query = "SELECT * FROM horarios WHERE 
-        (data BETWEEN '$dataInicial' AND '$dataFinal') $queryJustificativa ";
+        (data BETWEEN '$dataInicial' AND '$dataFinal') $queryJustificativa AND 
+        id_usuario = '$idUsuario' AND status = '$status' ORDER BY data DESC";
         $retorno = mysqli_query($conexao, $query);
         $array = mysqli_fetch_assoc($retorno);
 
@@ -118,15 +128,45 @@ class HorariosService{
             global $arrayRetorno;
             global $somaHoras;
             $arrayRetorno = array();
-
+            
             do{
                 array_push($arrayRetorno, $array);
                 $somaHoras += $array['total_horas'];
             }while($array = mysqli_fetch_assoc($retorno));
 
+            $totalResultado = count($arrayRetorno);
+            $mensagemSucesso = "Foram encontrados $totalResultado resultados";
+        
             return $arrayRetorno;
+        }else{
+            $mensagemErro = "Nenhum horário encontrado!";
         }
     } 
+
+    public function salvarEdicao($idUsuario, $data, $horaEntrada, $horaSaida, $justificativa){
+        $classConexao = new ConexaoDataBase();
+        $conexao = $classConexao->conectar();
+        global $mensagemErro;
+        
+        if($horaSaida > $horaEntrada){
+            if($this->verificaSeExiste($data, $horaEntrada, $horaSaida)){
+                $mensagemErro = "Horário já inserido!";
+            }else{
+                $query = "UPDATE horarios SET data = '$data',
+                hora_entrada = '$horaEntrada', hora_saida = '$horaSaida',
+                justificativa = '$justificativa' WHERE id = '$idUsuario'";
+                $retorno = mysqli_query($conexao, $query);
+                
+                if($retorno){
+                    echo"<script language='javascript' type='text/javascript'>
+                    alert('Horário alterado com sucesso!');window.location.
+                        href='index.php'</script>";
+                }
+            }
+        }else{
+            $mensagemErro = "Hora de saída deve ser maior que a hora de entrada!";
+        }
+    }
 }
 
 ?>

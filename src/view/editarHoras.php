@@ -1,15 +1,33 @@
 <?php 
   require '../controller/usuarioController.php';
+  require '../controller/horariosController.php';
 
   session_start();
 
+  $pagina = "editarHoras";
+  $controllerUsuario = new UsuarioController();
+  $controllerHoras = new HorariosController();
+
   if(isset($_GET['sair'])){
-    $controllerUsuario = new UsuarioController();
     $controllerUsuario->deslogarUsuario($_SESSION['usuarioLogado']);
+  }
+
+  if(isset($_POST['excluir'])){
+    $controllerHoras->excluirHorario($_POST['id']);
+  }
+
+  if(isset($_POST['salvarEdicao'])){
+    $controllerHoras->salvarEdicao($_POST['id'], $_POST['data'], 
+    $_POST['horaEntrada'], $_POST['horaSaida'], $_POST['justificativa']);
   }
 
   if( ! isset( $_SESSION['usuarioLogado'] ) ) {
       header("location: loginUsuarios.php");
+  }
+
+  if(isset($_POST['consultar'])){
+    $retorno = $controllerHoras->retornaHorariosPorHoraOuJustificativa($_SESSION['idUsuario'], 
+      $_POST['dataInicial'], $_POST['dataFinal'], $_POST['justificativa'], $pagina);
   }
 ?>
 
@@ -23,6 +41,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="../../resources/css/editarHoras.css">
+
+    <script src="https://kit.fontawesome.com/9e177e207c.js" crossorigin="anonymous"></script>
 
     <title>Editar Horas</title>
 
@@ -69,16 +89,25 @@
                   <form id="form1" method="POST" >
 
                   <div>
-                    <label for="">Data Entrada:</label>
-                    <input type="text" placeholder="DD/MM/AAAA">
-                  </div>
-                  <div>
-                    <label for="">Data Saída:</label>
-                    <input type="text" placeholder="DD/MM/AAAA">
+                    <div class="d-flex">
+                      <div>
+                        <label for="dataInicial"><span class="text-danger">*</span>Data Entrada:</label>
+                        <input name="dataInicial" type="text" placeholder="DD/MM/AAAA">
+                      </div>
+                      <div>
+                        <label for="dataFinal"><span class="text-danger">*</span>Data Saída:</label>
+                        <input name="dataFinal" type="text" placeholder="DD/MM/AAAA">
+                      </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <p class="mt-3 mb-0 text-success"><?= $mensagemSucesso ?></p>
+                        <p class="mt-3 mb-0 text-danger"><?= $mensagemErro ?></p>
+                    </div>
                   </div>
 
                   <div class="justificativa">
-                    <label for="">Justificativa:</label>
+                    <label for="justificativa">Justificativa:</label>
                     <select name="justificativa" id="">
                       <option value="">Selecione</option>
                       <option value="volvo">Prod. Conteúdo</option>
@@ -88,13 +117,14 @@
                     </select>
 
                     <div class="d-flex justify-content-center">
-                       <input class="submitInput" type="submit" value="Consultar">
+                       <input name="consultar" class="submitInput" type="submit" value="Consultar">
                     </div>
                   
                   </div>
                   </form>
                 </div>
 
+              <?php if(isset($retorno)){ ?>
               <form class="form2" method="POST">
                 <div class="mt-3">
                     <h5>Lista de Horas</h5>
@@ -108,53 +138,42 @@
                     <th>Hora Saída</th>
                     <th>Total Horas</th>
                     <th>Justificativa</th> 
-                    <th>Opções</th>
+                    <th style="width:80px;">Opções</th>
                   </tr>
-                  <tr>
-                    <td><input type="text" value="10/10/2016"></td>
-                    <td><input type="text" value="08:00"></td>
-                    <td><input type="text" value="12:00"></td>
-                    <td>4</td>
-                    <td>
-                      <select style="padding: 6px;" name="justificativa" id="">
-                        <option value="volvo">Prod. Conteúdo</option>
-                        <option value="saab">Versionamento</option>
-                        <option value="mercedes">Capacitação</option>
-                        <option value="audi">Empréstimo</option>
-                      </select>
-                    </td>
-                    <td>
-                    <span><img src="../../resources/imagens/iconeEditar.png"></span>
-                    <span><img src="../../resources/imagens/iconeExcluir.png"></span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>10/10/2016</td>
-                    <td>13:00</td>
-                    <td>17:00</td>
-                    <td>4</td>
-                    <td>Produção</td>
-                    <td>
-                    <span><img src="../../resources/imagens/iconeEditar.png"></span>
-                    <span><img src="../../resources/imagens/iconeExcluir.png"></span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>11/10/2016</td>
-                    <td>10:00</td>
-                    <td>12:00</td>
-                    <td>2</td>
-                    <td>Capacitação</td>
-                    <td>
-                    <span><img src="../../resources/imagens/iconeEditar.png"></span>
-                    <span><img src="../../resources/imagens/iconeExcluir.png"></span>
-                    </td>
-                  </tr>
+                  <?php
+                  $listaId = array();
+                    foreach($retorno as $horario) { 
+                      array_push($listaId, $horario['id']); ?>
+
+                      <form method="POST">
+                        <tr class="formEditar" style="height: 32px;">
+                          <td><input name="data" type="text" value="<?= $horario['data']; ?>"></td>
+                          <td><input name="horaEntrada" type="text" value="<?= $horario['hora_entrada']; ?>"></td>
+                          <td><input name="horaSaida" type="text" value="<?= $horario['hora_saida']; ?>"></td>
+                          <td><?= $horario['total_horas']; ?></td>
+                          <td class="justificativa2">
+                            <select name="justificativa" id="">
+                              <option value="<?= $horario['justificativa']; ?>"><?= $horario['justificativa']; ?></option>
+                              <option value="Prod. Conteúdo">Prod. Conteúdo</option>
+                              <option value="Versionamento">Versionamento</option>
+                              <option value="Capacitação">Capacitação</option>
+                              <option value="Empréstimo">Empréstimo</option>
+                            </select>
+                          </td>
+                          <td class="d-flex justify-content-center botoesSalvarExcluir" style="border: 0;">
+                            <input name="id" type="hidden" value="<?= $horario['id']; ?>">
+                            <button class="mr-1" type="submit" name="salvarEdicao"><i class="fas fa-save fa-lg"></i></button>
+                            <button type="submit" name="excluir"><img src="../../resources/imagens/iconeExcluir.png"></button>
+                          </td>
+                        </tr>
+                      </form>
+                  <?php }?>
+    
                   <tr>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>10</td>
+                    <td><?= $somaHoras;?></td>
                     <td></td>
                     <td></td>
                   </tr>
@@ -164,8 +183,8 @@
                     <h5>Legenda:</h5>
                     <div class="d-flex justify-content-between w-75">
                       <p>
-                      <span><img src="../../resources/imagens/iconeEditar.png"></span>
-                      Editar
+                      <span><i class="fas fa-save fa-lg"></i></span>
+                      Salvar 
                       </p>
                       <p>
                       <span><img src="../../resources/imagens/iconeExcluir.png"></span>
@@ -174,16 +193,23 @@
                     </div>
 
                 </div>
-
+                
                 <div class="enviarButton mt-3 d-flex justify-content-end">
                     <div style="margin-right: 10px;">
-                    <input class="submitInput" type="button" value="Voltar">
+                    <input onclick="location.href='javascript:history.back()'" class="submitInput" type="button" value="Voltar">
                     </div>
                     <div>
-                    <input class="submitInput" type="submit" value="Enviar para Análise">
+                    <input name="enviarAnalise" class="submitInput" type="submit" value="Enviar para Análise">
+
+                    <?php
+                      if(isset( $_POST['enviarAnalise'])){
+                        $controllerHoras->enviarParaAnalise($listaId);
+                      }
+                    ?>
                     </div>
                 </div>
               </form>   
+              <?php } ?>
               </div>
             </div>
         </div>

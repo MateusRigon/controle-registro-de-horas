@@ -87,24 +87,22 @@
                   <form id="form1" method="POST" >
                   
                   <div>
-                  <div class="d-flex">
-                  <div>
-                    <label for="data"><span class="text-danger">*</span>Data</label>
-                    <input name="data" required type="text" placeholder="DD/MM/AAAA">
-                  </div>
-                  <div class="horaInput">
-                    <label for="horaEntrada"><span class="text-danger">*</span>Hora Entrada:</label>
-                    <input name="horaEntrada" required type="text" placeholder="##:##">
-                  </div>
-                  </div>
+                    <div class="d-flex">
+                      <div>
+                        <label for="data"><span class="text-danger">*</span>Data</label>
+                        <input name="data" required type="text" placeholder="DD/MM/AAAA">
+                      </div>
+                      <div class="horaInput">
+                        <label for="horaEntrada"><span class="text-danger">*</span>Hora Entrada:</label>
+                        <input name="horaEntrada" required type="text" placeholder="##:##">
+                      </div>
+                    </div>
 
                  
-                 <div class="d-flex justify-content-center">
-                    <p class="mt-3 mb-0 text-success"><?= $mensagemSucesso ?></p>
-                    <p class="mt-3 mb-0 text-danger"><?= $mensagemErro ?></p>
-                 </div>
-                
-                  
+                    <div class="d-flex justify-content-center">
+                        <p class="mt-3 mb-0 text-success"><?= $mensagemSucesso ?></p>
+                        <p class="mt-3 mb-0 text-danger"><?= $mensagemErro ?></p>
+                    </div>
                   </div>
 
                   <div class="horaInput">
@@ -130,6 +128,7 @@
                   </form>
                 </div>
 
+              <?php if(isset($retorno)){ ?>
               <form class="form2" method="POST">
                 <div class="mt-3">
                     <h5>Lista de Horas</h5>
@@ -143,16 +142,14 @@
                     <th>Hora Saída</th>
                     <th>Total Horas</th>
                     <th>Justificativa</th> 
-                    <th>Opções</th>
+                    <th style="width:80px;">Opções</th>
                   </tr>
                   <?php
                   $listaId = array();
                     foreach($retorno as $horario) { 
+                      array_push($listaId, $horario['id']); ?>
                       
-
-                      array_push($listaId, $horario['id']);
-                      ?>
-                      <tr>
+                      <tr style="height: 33px;">
                         <td><?= $horario['data']; ?></td>
                         <td><?= $horario['hora_entrada']; ?></td>
                         <td><?= $horario['hora_saida']; ?></td>
@@ -160,12 +157,11 @@
                         <td><?= $horario['justificativa']; ?></td>
                         
                         <form method="POST" >
-                        <td class="d-flex justify-content-center">
-                        <a href="editarHoras.php"> <span><img src="../../resources/imagens/iconeEditar.png"></span></a>
-                        <input name="id" type="hidden" value="<?= $horario['id']; ?>">
-                        <button style="border: 0; cursor: pointer;" type="submit" name="excluir"><img src="../../resources/imagens/iconeExcluir.png"></button>
-                        </td>
-                    
+                          <td class="d-flex justify-content-center botoesSalvarExcluir" style="border: 0;">
+                            <a style="padding: 2px 4px 0px 4px;" href="editarHoras.php"> <span><img src="../../resources/imagens/iconeEditar.png"></span></a>
+                            <input name="id" type="hidden" value="<?= $horario['id']; ?>">
+                            <button type="submit" name="excluir"><img src="../../resources/imagens/iconeExcluir.png"></button>
+                          </td>
                         </form>
                       </tr>
                   <?php }?>
@@ -197,7 +193,7 @@
 
                 <div class="enviarButton mt-3 d-flex justify-content-end">
                     <div style="margin-right: 10px;">
-                    <input class="submitInput" type="button" value="Voltar">
+                    <input onclick="location.href='javascript:history.back()'" class="submitInput" type="button" value="Voltar">
                     </div>
                     <div>
                     <input name="enviarAnalise" class="submitInput" type="submit" value="Enviar para Análise">
@@ -210,6 +206,7 @@
                     </div>
                 </div>
               </form>   
+              <?php } ?>
               </div>
             </div>
         </div>

@@ -79,6 +79,7 @@
     width:100%;
     margin-right: 20px;
   }
+
   .form2 #divTable{
     background-color: rgba(242, 242, 242, 1);
     padding: 20px;
@@ -96,4 +97,16 @@
   }
   .sairLink:focus {
     outline: none;
+  }
+
+  .botoesSalvarExcluir button {
+    border: 0; 
+    cursor: pointer; 
+  }
+
+  .botoesSalvarExcluir button:hover{
+    border: 1px solid black; 
+  }
+  .botoesSalvarExcluir a:hover{
+    border: 1px solid black; 
   }

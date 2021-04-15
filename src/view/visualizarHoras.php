@@ -4,10 +4,11 @@
 
   session_start();
 
+  $pagina = "visualizarHoras";
+  $controllerUsuario = new UsuarioController();
   $controllerHoras = new HorariosController();
 
   if(isset($_GET['sair'])){
-    $controllerUsuario = new UsuarioController();
     $controllerUsuario->deslogarUsuario($_SESSION['usuarioLogado']);
   }
 
@@ -17,7 +18,7 @@
 
   if(isset($_POST['consultar'])){
     $retorno = $controllerHoras->retornaHorariosPorHoraOuJustificativa($_SESSION['idUsuario'], 
-                 $_POST['dataInicial'], $_POST['dataFinal'], $_POST['justificativa']);
+      $_POST['dataInicial'], $_POST['dataFinal'], $_POST['justificativa'], $pagina);
   }
 
 ?>
@@ -75,15 +76,25 @@
 
                   <h5>Consulta</h5>
 
-                  <form id="form1" method="POST" >
+                  <form id="form1" method="POST">
 
                   <div>
-                    <label for="dataInicial"><span class="text-danger">*</span>Data Início:</label>
-                    <input name="dataInicial" required type="text" placeholder="DD/MM/AAAA">
-                  </div>
-                  <div>
-                    <label for="dataFinal"><span class="text-danger">*</span>Data Final:</label>
-                    <input name="dataFinal" required type="text" placeholder="DD/MM/AAAA">
+                    <div class="d-flex">
+                      <div>
+                        <label for="dataInicial"><span class="text-danger">*</span>Data Início:</label>
+                        <input name="dataInicial" required type="text" placeholder="DD/MM/AAAA">
+                      </div>
+                      <div>
+                        <label for="dataFinal"><span class="text-danger">*</span>Data Final:</label>
+                        <input name="dataFinal" required type="text" placeholder="DD/MM/AAAA">
+                      </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <p class="mt-3 mb-0 text-success"><?= $mensagemSucesso ?></p>
+                        <p class="mt-3 mb-0 text-danger"><?= $mensagemErro ?></p>
+                    </div>
+                    
                   </div>
 
                   <div class="justificativa w-50">
@@ -103,8 +114,8 @@
                   </div>
                   </form>
                 </div>
-
-              <form class="form2" method="POST">
+              <?php if(isset($retorno)){ ?>
+                <form class="form2" method="POST">
                 <div class="mt-3">
                     <h5>Lista de Horas</h5>
                 </div>
@@ -179,6 +190,8 @@
                     </div>
                 </div>
               </form>   
+              <?php }?>
+              
               </div>
             </div>
         </div>

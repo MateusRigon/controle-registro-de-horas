@@ -24,9 +24,14 @@ class HorariosController{
         $service->enviarParaAnalise($listaId);
     }
 
-    public function retornaHorariosPorHoraOuJustificativa($idUsuario, $dataInicial, $dataFinal, $justificativa){
+    public function retornaHorariosPorHoraOuJustificativa($idUsuario, $dataInicial, $dataFinal, $justificativa, $pagina){
         $service = new HorariosService();
-        return $service->retornaHorariosPorHoraOuJustificativa($idUsuario, $dataInicial, $dataFinal, $justificativa);
+        return $service->retornaHorariosPorHoraOuJustificativa($idUsuario, $dataInicial, $dataFinal, $justificativa, $pagina);
+    }
+
+    public function salvarEdicao($idUsuario, $data, $horaEntrada, $horaSaida, $justificativa){
+        $service = new HorariosService();
+        $service->salvarEdicao($idUsuario, $data, $horaEntrada, $horaSaida, $justificativa);
     }
 }
 ?>
