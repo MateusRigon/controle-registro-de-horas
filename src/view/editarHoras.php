@@ -92,11 +92,11 @@
                     <div class="d-flex">
                       <div>
                         <label for="dataInicial"><span class="text-danger">*</span>Data Entrada:</label>
-                        <input name="dataInicial" type="text" placeholder="DD/MM/AAAA">
+                        <input name="dataInicial" type="date" placeholder="DD/MM/AAAA">
                       </div>
                       <div>
                         <label for="dataFinal"><span class="text-danger">*</span>Data Saída:</label>
-                        <input name="dataFinal" type="text" placeholder="DD/MM/AAAA">
+                        <input name="dataFinal" type="date" placeholder="DD/MM/AAAA">
                       </div>
                     </div>
 
@@ -110,10 +110,10 @@
                     <label for="justificativa">Justificativa:</label>
                     <select name="justificativa" id="">
                       <option value="">Selecione</option>
-                      <option value="volvo">Prod. Conteúdo</option>
-                      <option value="saab">Versionamento</option>
-                      <option value="mercedes">Capacitação</option>
-                      <option value="audi">Empréstimo</option>
+                      <option value="Prod. Conteúdo">Prod. Conteúdo</option>
+                      <option value="Versionamento">Versionamento</option>
+                      <option value="Capacitação">Capacitação</option>
+                      <option value="Empréstimo">Empréstimo</option>
                     </select>
 
                     <div class="d-flex justify-content-center">
@@ -147,9 +147,9 @@
 
                       <form method="POST">
                         <tr class="formEditar" style="height: 32px;">
-                          <td><input name="data" type="text" value="<?= $horario['data']; ?>"></td>
-                          <td><input name="horaEntrada" type="text" value="<?= $horario['hora_entrada']; ?>"></td>
-                          <td><input name="horaSaida" type="text" value="<?= $horario['hora_saida']; ?>"></td>
+                          <td><input name="data" type="date" value="<?= $horario['data']; ?>"></td>
+                          <td><input name="horaEntrada" type="time" value="<?= $horario['hora_entrada']; ?>"></td>
+                          <td><input name="horaSaida" type="time" value="<?= $horario['hora_saida']; ?>"></td>
                           <td><?= $horario['total_horas']; ?></td>
                           <td class="justificativa2">
                             <select name="justificativa" id="">

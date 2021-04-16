@@ -86,15 +86,15 @@
 
                   <form id="form1" method="POST" >
                   
-                  <div>
-                    <div class="d-flex">
+                  <div style="width:37%;">
+                    <div class="d-flex" >
                       <div>
                         <label for="data"><span class="text-danger">*</span>Data</label>
-                        <input name="data" required type="text" placeholder="DD/MM/AAAA">
+                        <input name="data" required type="date" >
                       </div>
-                      <div class="horaInput">
+                      <div class="horaInput" style="width:100%; margin-left: 10px;">
                         <label for="horaEntrada"><span class="text-danger">*</span>Hora Entrada:</label>
-                        <input name="horaEntrada" required type="text" placeholder="##:##">
+                        <input class="w-100" name="horaEntrada" required type="time">
                       </div>
                     </div>
 
@@ -105,9 +105,9 @@
                     </div>
                   </div>
 
-                  <div class="horaInput">
+                  <div class="horaInput" style="margin-left:30px; width: 15%;">
                     <label for="horaSaida"><span class="text-danger">*</span>Hora Saída:</label>
-                    <input name="horaSaida" required type="text" placeholder="##:##">
+                    <input class="w-100" name="horaSaida" required type="time">
                   </div>
 
                   <div class="justificativa">
@@ -147,10 +147,12 @@
                   <?php
                   $listaId = array();
                     foreach($retorno as $horario) { 
+                      $dataOriginal = $horario['data'];
+                      $dataFormatada = date("d/m/Y", strtotime($dataOriginal));
                       array_push($listaId, $horario['id']); ?>
                       
                       <tr style="height: 33px;">
-                        <td><?= $horario['data']; ?></td>
+                        <td><?= $dataFormatada; ?></td>
                         <td><?= $horario['hora_entrada']; ?></td>
                         <td><?= $horario['hora_saida']; ?></td>
                         <td><?= $horario['total_horas']; ?></td>

@@ -82,11 +82,11 @@
                     <div class="d-flex">
                       <div>
                         <label for="dataInicial"><span class="text-danger">*</span>Data Início:</label>
-                        <input name="dataInicial" required type="text" placeholder="DD/MM/AAAA">
+                        <input name="dataInicial" required type="date" placeholder="DD/MM/AAAA">
                       </div>
                       <div>
                         <label for="dataFinal"><span class="text-danger">*</span>Data Final:</label>
-                        <input name="dataFinal" required type="text" placeholder="DD/MM/AAAA">
+                        <input name="dataFinal" required type="date" placeholder="DD/MM/AAAA">
                       </div>
                     </div>
 
@@ -132,9 +132,12 @@
                   </tr>
                   
                   <?php
-                      foreach($retorno as $horario){ ?>
+                      foreach($retorno as $horario){ 
+                      $dataOriginal = $horario['data'];
+                      $dataFormatada = date("d/m/Y", strtotime($dataOriginal));  
+                      ?>
                       <tr>
-                        <td><?= $horario['data']; ?></td>
+                        <td><?= $dataFormatada; ?></td>
                         <td><?= $horario['hora_entrada']; ?></td>
                         <td><?= $horario['hora_saida']; ?></td>
                         <td><?= $horario['total_horas']; ?></td>

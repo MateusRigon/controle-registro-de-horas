@@ -123,7 +123,7 @@ class HorariosService{
         id_usuario = '$idUsuario' AND status = '$status' ORDER BY data DESC";
         $retorno = mysqli_query($conexao, $query);
         $array = mysqli_fetch_assoc($retorno);
-
+        
         if( ! empty($array)){
             global $arrayRetorno;
             global $somaHoras;
