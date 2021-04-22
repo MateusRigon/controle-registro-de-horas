@@ -152,9 +152,12 @@ class HorariosService{
             if($this->verificaSeExiste($data, $horaEntrada, $horaSaida)){
                 $mensagemErro = "Horário já inserido!";
             }else{
+                $totalHoras = substr($horaSaida - $horaEntrada, 0, 1); 
+
                 $query = "UPDATE horarios SET data = '$data',
                 hora_entrada = '$horaEntrada', hora_saida = '$horaSaida',
-                justificativa = '$justificativa' WHERE id = '$idUsuario'";
+                total_horas = '$totalHoras', justificativa = '$justificativa' 
+                WHERE id = '$idUsuario'";
                 $retorno = mysqli_query($conexao, $query);
                 
                 if($retorno){
